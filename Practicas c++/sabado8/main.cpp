@@ -1,30 +1,44 @@
 #include <iostream>
 #include <cstdlib>
+/* hacer programa que ingrese el nombre del trabajador, el sueldo del trabajador, calcular entonces el bono de alimentacion en un 80%, bono de asistencia 70% y que muestre el total a cobrar del
+trabajador*/
 using namespace std;
-
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
 int main(int argc, char** argv) {
 	
-	/*Declaramos un color*/
-	system ("color 1a");
+	system("color 34");
 	
-	/* declaramos todas las variables a utilizar en nuestro script*/
-	int nro1 , nro2, suma,resta,multiplicacion,division;
+	int sueldo, bono_alimentacion, bono_asistencia ,total_sueldo;
+	string trabajador;
 	
-	cout <<"Ingrese el primer valor: "; cin >> nro1;  /*cin almacena variables y cout es para mostrar un mensaje en pantalla*/
-	cout <<"Ingrese el segundo valor: "; cin >> nro2; 
+	cout <<"Ingrese el nombre del trabajador: ";cin>>trabajador;
+	cout <<"Ingrese el sueldo del trabajador: "; cin>> sueldo;
 	
-	suma = nro1 + nro2;
-	resta = nro1 - nro2;
-	multiplicacion = nro1 * nro2;
-	division = nro1 / nro2;
+	bono_alimentacion = sueldo * 0.80;
+	
+	cout<<"Bono de alimentacion: "<< bono_alimentacion<<endl;
+	
+	bono_asistencia = sueldo* 0.70;
+	
+	cout <<"Bono de asisencia: " << bono_asistencia << endl;
+	
+	total_sueldo = sueldo + bono_alimentacion + bono_asistencia;
+	
+	cout <<" Sueldo a cobrar del trabajador: " << total_sueldo << endl;
 	
 	
-	cout <<"La suma es: " << suma << endl; /*endl permite crear saltos de linea para organizar mejor el codigo*/
-	cout <<"La resta es: " << resta<< endl;
-	cout <<"La multiplicacion es: " << multiplicacion << endl;
-	cout <<"La division es: " << division << endl;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

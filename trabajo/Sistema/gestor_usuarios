@@ -1,0 +1,221 @@
+#Importamos librerias 
+import tkinter as tk 
+from tkinter import messagebox as mb
+from tkinter import ttk
+from tkinter import *
+from crud_usuarios import Usuarios
+#Variables, funciones y clases
+
+class Ventana_gestor_usuarios:
+    
+    def __init__(self):
+        self.usuario1 = Usuarios()
+        # self.usuarios = Usuario(usuario, contraseña) 
+        #Ventana principal
+        self.window = tk.Tk()
+        self.window.title ("Gestion de Usuarios y Permisos")
+        self.window.geometry("1440x800")
+        self.window.resizable(False, False)
+        
+        #Frame de creacion de usuario 
+        self.frame1 = tk.Frame(self.window)
+        self.frame1.place(x=0,y=0, width = 720, height = 800)
+        self.frame1.config(bg="White")
+        
+        #Titulos y subtitulos
+        self.lbl_title = tk.Label(self.frame1, text = "Distribuidora america del centro", font=("Verdana 20  bold"))
+        self.lbl_title.place(anchor="center", relx= 0.5, rely=0.2)
+        self.lbl_title.config(bg="White", fg="#0067C8", width=50, height=2)
+        
+        self.lbl_subtitle = tk.Label(self.frame1, text="Creacion de usuarios del sistema", font=("Verdana 16 bold"))
+        self. lbl_subtitle.place(anchor="center", relx=0.5, rely=0.3)
+        self.lbl_subtitle.config(bg="White")
+        
+        
+        #Entradas de usuario
+        self.lbl_usuario = tk.Label(self.frame1, text="Usuario", font=("Arial 12"))
+        self.lbl_usuario.place(anchor="center", relx=0.27, rely= 0.4,)
+        self.lbl_usuario.config(bg="White")
+        
+        self.txb_usuario = ttk.Entry(self.frame1)
+        self.txb_usuario.place(anchor="center", relx=0.5, rely=0.45, width=400)
+        
+        self.lbl_contraseña = tk.Label(self.frame1, text="Contraseña", font=("Arial 12"))
+        self.lbl_contraseña.place(anchor="center", relx=0.29, rely=0.5)
+        self.lbl_contraseña.config(bg="White")
+        
+        self.txb_contraseña = ttk.Entry(self.frame1)
+        self.txb_contraseña.place(anchor="center", relx=0.5, rely = 0.55, width=400)
+        
+        #Botones
+        self.btn_crear = ttk.Button(self.frame1, text="Crear Usuario", command= self.crear_usuario)
+        self.btn_crear.place(anchor="center",relx=0.35, rely=0.63, width=120 , height=30)
+        
+        self.btn_cancelar = ttk.Button(self.frame1, text="Cancelar")
+        self.btn_cancelar.place(anchor="center",relx=0.65, rely=0.63, width=120 , height=30)
+        
+        #Frame de visualizacion de usuarios y gestion
+        self.frame2 = tk.Frame(self.window)
+        self.frame2.place(x=720, y=0, width=720, height=800)
+        self.frame2.config(bg="White")
+        
+        #Titulosy subtitulos
+        self.lbl_title2 = tk.Label(self.frame2, text="Gestion de usuarios del sistema", font=("Verdana 20 bold"))
+        self.lbl_title2.place(anchor="center",relx=0.5, rely=0.2)
+        self.lbl_title2.config(bg="white")
+        
+        self.tree = ttk.Treeview(self.frame2 , columns=("id", "usuario", "contraseña", "permisos"), show="headings")
+        self.tree.place(anchor="center", relx=0.5, rely=0.5, width=700, height=500)
+        self.tree.heading("id", text="ID")
+        self.tree.heading("usuario", text="Usuario")
+        self.tree.heading("contraseña", text="Contraseña")
+        self.tree.heading("permisos", text="Permisos")
+        
+        self.tree.column("id", width=50)
+        
+        self.btn_eliminar = ttk.Button(self.frame2, text="Eliminar", command= self.eliminar_usuario)
+        self.btn_eliminar.place(anchor="center", relx=0.5, rely=0.9, width=120, height=30)
+        
+        self.btn_actualizar = ttk.Button(self.frame2, text="Actualizar", command= self.ventana_editar)
+        self.btn_actualizar.place(anchor="center",relx=0.7, rely=0.9, width=120, height=30)
+        
+        
+        
+        #llamamos a la funcion cargar para que cargue los usuarios en el treeview
+        self.cargar_usuarios(self.tree) 
+        
+        self.window.mainloop()
+        
+
+
+
+
+
+
+
+    # Definición del método faltante
+    def crear_usuario(self):
+        usuario = self.txb_usuario.get()
+        contraseña = self.txb_contraseña.get()
+        
+        #Validamos los campos para que no esten vacios
+        if not usuario or not contraseña:
+            mb.showerror("Error", "Debe rellenar todos los campos")
+            return
+        
+        #insertamos los datos de los entry en la bd y creamos una variable user_id para guardar el id del usuario
+        datos = (usuario , contraseña)
+        user_id = self.usuario1.insertar_usuario(datos)
+        
+        #Insertamos el usuario en el treeview
+        if user_id:
+            self.tree.insert("","end", values=(user_id, usuario, contraseña))
+        else:
+            mb.showerror("Error", "No se pudo crear el usuario")
+        self.txb_usuario.delete(0, END) #limpiamos campos
+        self.txb_contraseña.delete(0, END)
+
+    # Definición del método faltante
+    def eliminar_usuario(self):
+        user_id = self.seleccionar()
+        
+        if user_id:
+            #eliminar usuario de la bd
+            if  mb.askyesno("Eliminar usuario", "¿Desea eliminar el usuario?"):
+                if self.usuario1.eliminar_usuario(user_id):
+                #Eliminamos el usuario del treeview
+                    selected_item = self.tree.selection()[0]
+                    self.tree.delete(selected_item)
+                    mb.showinfo("Información", "Usuario eliminado correctamente")
+            # mb.showerror("Error", "No se ha pudo eliminar el usuario")
+        else:
+            mb.showerror("Error", "No se pudo seleccionar el usuario")
+
+
+    # Definición del método faltante
+    def seleccionar(self):
+        selected_item = self.tree.selection()
+        if selected_item:
+            item = self.tree.item(selected_item)
+            user_id = item["values"][0]
+            return user_id
+        else:
+            mb.showerror("Error", "No se ha seleccionado ningun usuario")
+            return None
+
+    # Definición del método faltante
+    def cargar_usuarios(self, tree):
+        usuarios = self.usuario1.consultar_usuarios()
+        for usuario in usuarios:
+            tree.insert("","end", values=(usuario[0], usuario[1], usuario[2]))
+            
+    # def atajo_eliminar(self, event):
+    #     self.eliminar_usuario()
+    
+    def editar_usuario(self):
+        
+        #obtenemos los datos de los campos
+        id = self.seleccionar()
+        usuario = self.entry_usuario.get()
+        contraseña = self.entry_contraseña.get()
+        #Verificamos que no esten vacios los entry's
+        if not usuario or not contraseña:
+            mb.showerror("Error", "Debe rellenar todos los campos")
+            return
+        
+        #Actualizamos los datos del usuario
+        datos = (usuario, contraseña, id)
+        mb.askyesno("Actualizar usuario", "¿Desea actualizar el usuario?") # Acomodar el askyesno para que funcione
+        if self.usuario1.actualizar_usuario(datos):
+            #Actualizamos el usuario en el treeview
+            selected_item = self.tree.selection()[0]
+            self.tree.item(selected_item, values=(id, usuario, contraseña))
+            mb.showinfo("Información", "Usuario actualizado correctamente")
+            self.entry_usuario.delete(0, END)
+            self.entry_contraseña.delete(0, END)
+            self.edit_window.destroy()
+        else:
+            mb.showerror("Error", "No se pudo actualizar el usuario")
+    
+    def ventana_editar(self):
+        self.edit_window = tk.Toplevel()
+        self.edit_window.title("Editar usuario")
+        self.edit_window.geometry("800x600")
+        self.edit_window.resizable(False,False)
+        self. edit_window.config(bg="White")
+        
+        
+        self.lbl_title = tk.Label(self.edit_window, text="Editar usuario", font=("Verdana 20 bold"))
+        self.lbl_title.place(anchor="center", relx=0.5, rely=0.1)
+        self.lbl_title.config(bg="White", fg="#0067C8")
+        
+        self.tittle_usuario = tk.Label(self.edit_window, text="Usuario", font=("Arial 12"))
+        self.tittle_usuario.place(anchor="center", relx=0.5, rely=0.2)
+        self.tittle_usuario.config(bg="White")
+        
+        self.entry_usuario = ttk.Entry(self.edit_window)
+        self.entry_usuario.place(anchor="center", relx=0.5, rely=0.25, width=400)
+        
+        self.tittle_contraseña = tk.Label(self.edit_window, text="Contraseña", font=("Arial 12"))
+        self.tittle_contraseña.place(anchor="center", relx=0.5, rely=0.35)
+        self.tittle_contraseña.config(bg="White")
+        
+        self.entry_contraseña = ttk.Entry(self.edit_window)
+        self.entry_contraseña.place(anchor="center", relx=0.5, rely=0.4, width=400)
+        
+        self.btn_guardar = ttk.Button(self.edit_window, text="Guardar", command=self.editar_usuario)
+        self.btn_guardar.place(anchor="center", relx=0.5, rely=0.5, width=120, height=30)
+        
+        #Cargamos los datos del usuario seleccionado en los entry's
+        #obtenemos el usuario seleccionado con tree.selection y lo metemos en el item para cargar los datos en los entry's
+        selected_item = self.tree.selection()
+        if selected_item:
+            item = self.tree.item(self.tree.selection()[0])
+            self.entry_usuario.insert(0, item["values"][1])
+            self.entry_contraseña.insert(0,item["values"][2])
+        else:
+            mb.showerror("Error","No se ha seleccionado ningun usuario")
+            return None
+
+if __name__ == "__main__":
+    Ventana_gestor_usuarios()

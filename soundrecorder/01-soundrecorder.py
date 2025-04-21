@@ -6,6 +6,7 @@ import sounddevice as sd
 from scipy.io.wavfile import write
 
 #Funciones y logica del programa
+selected_path = "" # creamos una variable global para la ruta donde queremos que se guarde nuestro archivo
 
 def record (): # esta funcion se encarga de la accion de grabar, tiene definido un framerate (puede cambiarse ), una duracion que es establecida por el usuario, el nombre a escoger para el archivo y la demas logica
     framerate = 44100
@@ -19,7 +20,15 @@ def record (): # esta funcion se encarga de la accion de grabar, tiene definido 
         sd.wait()
         name_file = str(name_str) # Aqui convertimos la variable name_str a string para poder adjuntarla como el nombre que se le coloca al archivo
         file = name_file + ".wav"
-        write(file , framerate , record_voice)
+        
+        # verificar seleccion de ruta
+        if not selected_path: # Se revisa si esta seleccionado un directorio para guardar el archivo
+            messagebox.showwarning("Error", "Seleccione una carpeta para guardar el archivo")
+            return
+        
+        #crear ruta del archivo
+        full_path = f"{selected_path}/{file}" # en este caso full path va a contener la ruta y al final el nombre del archivo para ser guardado
+        write(full_path , framerate , record_voice)
         messagebox.showinfo("Grabacion terminada", "Grabacion creada con exito")
     except ValueError:
         messagebox.showwarning("Error", "Ingrese un valor numerico")
@@ -36,10 +45,16 @@ def save ():
     save_button.pack()
     root_rename.mainloop()
 
-def select ():
-    file_path = filedialog.askdirectory(initialdir="Descargas" , title="Guardar archivo")
-    lbl_path = ttk.Label(root, text=file_path)
-    lbl_path.grid(row= 4 , column= 0)
+def select (): #Declaramos una variable para seleccionar la ruta de guardado 
+    
+    #Traemos la variable global de la mismma manera (global) para que esta sea cambiada con la ruta que seleccionemos
+    global selected_path
+    selected_path = filedialog.askdirectory(initialdir="Descargas" , title="Guardar archivo")
+    if selected_path: # verificamos que se haya seleccionado una ruta
+        lbl_path = ttk.Label(root, text=f"Carpeta seleccionada: {selected_path}")
+        lbl_path.grid(row= 7 , column= 0)
+    else: 
+        messagebox.showerror("Error", "Debe escoger una ruta")
 
 #Interfaz
 

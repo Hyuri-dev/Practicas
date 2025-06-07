@@ -34,8 +34,6 @@ class MyApp:
             # self.image.config(image= imagen)
         else:
             print(f"Error, no ha sido posible cargar el archivo intente nuevamente.")
-        
-
 
 
 example = MyApp()

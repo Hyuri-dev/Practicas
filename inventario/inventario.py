@@ -10,7 +10,16 @@ main = tk.Tk()
 main.title("Inventario")
 main.geometry("1280x1000")
 main.resizable(False,True)
+barra_menu = tk.Menu(main)
 main.config(bg= colors.Colores.background)
+main.configure(menu= barra_menu)
+
+# Crear el primer menú
+menu_mantenimiento = tk.Menu(barra_menu, tearoff=False)
+menu_mantenimiento.add_command(label="Abrir archivo", command=accion_seleccionar)
+
+#Agregar menu a la barra
+barra_menu.add_cascade(menu=menu_mantenimiento, label="mantenimiento")
 
 #Expandimos la columna 0 de main
 main.grid_columnconfigure(0, weight=1)

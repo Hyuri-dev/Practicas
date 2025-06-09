@@ -25,13 +25,12 @@ barra_menu.add_cascade(menu=menu_mantenimiento, label="mantenimiento")
 panel_pestañas = ttk.Notebook(main)
 
 #Creamos la pestaña para el inventario de novo
-pestaña_inventario_novo = ttk.Frame(panel_pestañas)
+pestaña_inventario_diacenca = tk.Frame(panel_pestañas, bg=colors.Colores.background)
 
-panel_pestañas.add(pestaña_inventario_novo, text="Inventario Novo")
+
+panel_pestañas.add(pestaña_inventario_diacenca, text="Inventario Diacenca")
 panel_pestañas.grid(row= 5, column= 0 , sticky="ew", padx= 20 , pady= 10)
 
-title_novo = tk.Label(pestaña_inventario_novo, text="Inventario Novo europa")
-title_novo.pack()
 
 
 #Expandimos la columna 0 de main
@@ -42,7 +41,7 @@ main.grid_columnconfigure(2, weight=1)
 
 #Frames (espacio y secciones del programa)
 #--------------- navbar --------------- 
-menu_frame = tk.Frame(main, bg=colors.Colores.background, width= 1280, height= 50)
+menu_frame = tk.Frame(pestaña_inventario_diacenca, bg=colors.Colores.background, width= 1280, height= 50)
 menu_frame.grid(row= 0 , column=0, sticky="ew")
 menu_frame.propagate(False)
 
@@ -54,7 +53,7 @@ logo_diacenca = tk.Label(menu_frame, image=logo, bg=colors.Colores.background)
 logo_diacenca.grid(row=0, column=0, sticky="w", padx= 35, pady= 10)
 
 #--------------- stock information --------------- 
-frame_info_inventory = tk.Frame(main, bg=colors.Colores.background, width=1280, height=110)
+frame_info_inventory = tk.Frame(pestaña_inventario_diacenca, bg=colors.Colores.background, width=1280, height=110)
 frame_info_inventory.grid(row=2, column=0)
 frame_info_inventory.propagate(False)
 
@@ -82,13 +81,13 @@ card_total_low_stock_items.grid(row=0, column=1, padx=10, pady=10, sticky="w")
 #--------------- ---------------- 
 
 #text's
-title = tk.Label(main, text="Inventario", font=("Arial", 30, "bold"))
+title = tk.Label(pestaña_inventario_diacenca, text="Inventario", font=("Arial", 30, "bold"))
 title.config(bg=colors.Colores.background,fg="Black")
 title.grid(row= 1, column= 0, sticky="w", padx= 170, pady= 45)
 
 #----- logos productos ------
 
-frame_logos = tk.Frame(main, width=1280, height= 120 ,background=colors.Colores.background)
+frame_logos = tk.Frame(pestaña_inventario_diacenca, width=1280, height= 120 ,background=colors.Colores.background)
 frame_logos.grid(row= 3, column= 0, sticky="ew", pady= 10)
 frame_logos.grid_propagate(False)
 
@@ -122,7 +121,7 @@ logo_monaca = tk.Label(frame_logos, image=monaca_logo ,bg=colors.Colores.backgro
 logo_monaca.grid(row = 0 , column= 2, sticky="en",padx= 85 , pady= 45)
 
 #Frame horizontal
-frame_horizontal = tk.Frame(main,bg=colors.Colores.background)
+frame_horizontal = tk.Frame(pestaña_inventario_diacenca,bg=colors.Colores.background)
 frame_horizontal.grid(row= 4 , column= 0, padx= (65,50) , pady= 10, sticky="ew")
 frame_horizontal.grid_columnconfigure(0 , weight=1)
 frame_horizontal.grid_columnconfigure(1 , weight=1)

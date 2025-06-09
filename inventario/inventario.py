@@ -21,6 +21,19 @@ menu_mantenimiento.add_command(label="Abrir archivo", command=accion_seleccionar
 #Agregar menu a la barra
 barra_menu.add_cascade(menu=menu_mantenimiento, label="mantenimiento")
 
+#Creamos una barra de pestañas para añadir el inventario de novo
+panel_pestañas = ttk.Notebook(main)
+
+#Creamos la pestaña para el inventario de novo
+pestaña_inventario_novo = ttk.Frame(panel_pestañas)
+
+panel_pestañas.add(pestaña_inventario_novo, text="Inventario Novo")
+panel_pestañas.grid(row= 5, column= 0 , sticky="ew", padx= 20 , pady= 10)
+
+title_novo = tk.Label(pestaña_inventario_novo, text="Inventario Novo europa")
+title_novo.pack()
+
+
 #Expandimos la columna 0 de main
 main.grid_columnconfigure(0, weight=1)
 main.grid_columnconfigure(1, weight=1)
@@ -73,10 +86,6 @@ title = tk.Label(main, text="Inventario", font=("Arial", 30, "bold"))
 title.config(bg=colors.Colores.background,fg="Black")
 title.grid(row= 1, column= 0, sticky="w", padx= 170, pady= 45)
 
-# title_list = tk.Label(main, text="Productos", font=("Arial", 35, "bold"))
-# title_list.config(bg=colors.Colores.background,fg=colors.Colores.second_color)
-# title_list.grid(row= 3, column= 0 , sticky="w", padx= 90, pady= 30)
-
 #----- logos productos ------
 
 frame_logos = tk.Frame(main, width=1280, height= 120 ,background=colors.Colores.background)
@@ -125,55 +134,65 @@ frame_products1 = tk.Frame(frame_horizontal, width= 320, height= 400, bg=colors.
 frame_products1.grid(row=0 , column= 0,padx=(35 ,35), sticky="nsew")
 frame_products1.grid_propagate(False) # Evitamos que se propague y el frame se ajuste segun a las medidas establecidas
 
-#Treeview
-columns = ("Producto" , "Tipo", "Cantidad")
+#first Treeview para Allegri
+columns = ("Producto", "Tipo", "Cantidad")
 
-listado_allegri = ttk.Treeview(frame_products1, columns= columns, show="headings", height= 300)
+scroll_allegri = tk.Scrollbar(frame_products1, orient="vertical")
+listado_allegri = ttk.Treeview(frame_products1, columns=columns, show="headings", height=contar_allegri(), yscrollcommand=scroll_allegri.set)
+scroll_allegri.config(command=listado_allegri.yview)
 
 listado_allegri.heading("Producto" , text="Producto")
 listado_allegri.heading("Tipo", text="Tipo")
 listado_allegri.heading("Cantidad" , text="Cantidad")
-listado_allegri.grid(row= 0 , column= 0, sticky="n", pady= 2, ipadx= 80 )
+listado_allegri.grid(row=0, column=0, sticky="nsew", pady=(2,0), ipadx=80)
+scroll_allegri.grid(row=0, column=1, sticky="ns")
 
-#Centrar el contenido de las columnas
 listado_allegri.column("Producto", width=150)
-listado_allegri.column("Tipo", anchor="center", width= 5)
-listado_allegri.column("Cantidad", anchor="center", width= 10)
+listado_allegri.column("Tipo", anchor="center", width=5)
+listado_allegri.column("Cantidad", anchor="center", width=10)
 
 
-#Second treeview
-
-frame_products2 = tk.Frame(frame_horizontal, width= 320 , height= 400, bg=colors.Colores.background)
-frame_products2.grid(row= 0 , column= 1, sticky="nsew", padx=(0, 35))
+#Second treeview para Horizonte
+frame_products2 = tk.Frame(frame_horizontal, width=320, height=400, bg=colors.Colores.background)
+frame_products2.grid(row=0, column=1, sticky="nsew", padx=(0, 35))
 frame_products2.grid_propagate(False)
+frame_products2.grid_rowconfigure(0, weight=1)
+frame_products2.grid_columnconfigure(0, weight=1)
 
-listado_horizonte = ttk.Treeview(frame_products2, columns=columns, show="headings")
-listado_horizonte.heading("Producto" , text="Producto")
+scroll_horizonte = tk.Scrollbar(frame_products2, orient="vertical")
+listado_horizonte = ttk.Treeview(frame_products2, columns=columns, show="headings", height= contar_horizonte(), yscrollcommand=scroll_horizonte.set)
+scroll_horizonte.config(command=listado_horizonte.yview)
+
+listado_horizonte.heading("Producto", text="Producto")
 listado_horizonte.heading("Tipo", text="Tipo")
-listado_horizonte.heading("Cantidad" , text="Cantidad")
-listado_horizonte.grid(row= 0 , column= 0, sticky="n", pady= 2, ipadx= 80 )
+listado_horizonte.heading("Cantidad", text="Cantidad")
+listado_horizonte.grid(row=0, column=0, sticky="nsew", pady=(2,0), ipadx=80)
+scroll_horizonte.grid(row=0, column=1, sticky="ns")
 
-#Centrar el contenido de las columnas
 listado_horizonte.column("Producto", width=150)
-listado_horizonte.column("Tipo", anchor="center", width= 5)
-listado_horizonte.column("Cantidad", anchor="center", width= 10)
+listado_horizonte.column("Tipo", anchor="center", width=5)
+listado_horizonte.column("Cantidad", anchor="center", width=10)
 
-#Third treeview
-
-frame_products3 = tk.Frame(frame_horizontal, width= 320 , height= 400, bg=colors.Colores.background)
-frame_products3.grid(row= 0 , column= 2, sticky="nsew")
+#Third treeview para Monaca
+frame_products3 = tk.Frame(frame_horizontal, width=320, height=400, bg=colors.Colores.background)
+frame_products3.grid(row=0, column=2, sticky="nsew")
 frame_products3.grid_propagate(False)
+frame_products3.grid_rowconfigure(0, weight=1)
+frame_products3.grid_columnconfigure(0, weight=1)
 
-listado_monaca = ttk.Treeview(frame_products3, columns=columns, show="headings", height=300)
-listado_monaca.heading("Producto" , text="Producto")
+scroll_monaca = tk.Scrollbar(frame_products3, orient="vertical")
+listado_monaca = ttk.Treeview(frame_products3, columns=columns, show="headings", height=contar_monaca(), yscrollcommand=scroll_monaca.set)
+scroll_monaca.config(command=listado_monaca.yview)
+
+listado_monaca.heading("Producto", text="Producto")
 listado_monaca.heading("Tipo", text="Tipo")
-listado_monaca.heading("Cantidad" , text="Cantidad")
-listado_monaca.grid(row= 0 , column= 0, sticky="n", pady= 2, ipadx= 80 )
+listado_monaca.heading("Cantidad", text="Cantidad")
+listado_monaca.grid(row=0, column=0, sticky="nsew", pady=(2,0), ipadx=80)
+scroll_monaca.grid(row=0, column=1, sticky="ns")
 
-#Centrar el contenido de las columnas
 listado_monaca.column("Producto", width=150)
-listado_monaca.column("Tipo", anchor="center", width= 5)
-listado_monaca.column("Cantidad", anchor="center", width= 10)
+listado_monaca.column("Tipo", anchor="center", width=5)
+listado_monaca.column("Cantidad", anchor="center", width=10)
 
 #Cargamos los datos del excel
 datos_allegri = cargar_allegri()

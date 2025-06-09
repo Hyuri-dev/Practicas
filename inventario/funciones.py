@@ -6,30 +6,56 @@ import json
 
 CONFIG_FILE = "config.json"
 
-def cargar_allegri(ruta_archivo = None):
-    # Si se proporciona una ruta, la usamos; si no, intentamos recuperar la última ruta usada o una ruta por defecto
+def cargar_datos_excel(sheet_name, columnas, ruta_archivo=None):
+    """
+    Carga datos de un archivo Excel dado el nombre de la hoja y las columnas a extraer.
+    Si no se proporciona ruta, permite seleccionar el archivo y guarda la última ruta usada.
+    """
     ruta_a_cargar = ruta_archivo
     if ruta_archivo is None:
-        # Intentamos obtener la última ruta guardada en el archivo de configuración
         ultima_ruta = obtener_ultima_ruta()
-        # Si existe una última ruta y el archivo existe en esa ruta, la usamos
         if ultima_ruta and os.path.exists(ultima_ruta):
             ruta_a_cargar = ultima_ruta
-            print(f"Cargando inventario desde la ruta: {ruta_a_cargar}")
+            print(f"Cargando desde la última ruta: {ruta_a_cargar}")
         else:
-            # Si no hay última ruta válida, usamos la ruta por defecto
             ruta_a_cargar = os.path.join("assets", "files", "inventario.xlsm")
             print(f"Cargando inventario desde la ruta por defecto: {ruta_a_cargar}")
     try:
-        # Intentamos leer el archivo de Excel en la hoja "inventario"
-        df_inventario = pd.read_excel(ruta_a_cargar, sheet_name="inventario")
-        # Extraemos las columnas relevantes y las convertimos en una lista de tuplas
-        datos = list(df_inventario[['PRODUCTOS ALLEGRI', 'TIPO ALLEGRI', 'CANTIDAD ALLEGRI']].itertuples(index=False, name=None))
+        df = pd.read_excel(ruta_a_cargar, sheet_name=sheet_name)
+        datos = list(df[columnas].itertuples(index=False, name=None))
         return datos
     except Exception as e:
-        # Si ocurre un error al leer el archivo, lo mostramos y devolvemos una lista vacía
         print(f"Error al cargar el archivo {ruta_a_cargar}:  {e}")
         return []
+
+# Wrappers para cada hoja
+
+def cargar_allegri(ruta_archivo=None):
+    """
+    Carga los datos de Allegri filtrando filas vacías o con NaN en el producto.
+    """
+    datos = cargar_datos_excel(
+        sheet_name="inventario",
+        columnas=['PRODUCTOS ALLEGRI', 'TIPO ALLEGRI', 'CANTIDAD ALLEGRI'],
+        ruta_archivo=ruta_archivo
+    )
+    # Filtrar filas donde el producto es vacío o NaN
+    datos_filtrados = [fila for fila in datos if fila[0] and str(fila[0]).strip().lower() != 'nan']
+    return datos_filtrados
+
+def cargar_horizonte(ruta_archivo=None):
+    return cargar_datos_excel(
+        sheet_name="INVENTARIO HORIZONTE",
+        columnas=['PRODUCTOS HORIZONTE', 'TIPO HORIZONTE', 'CANTIDAD HORIZONTE'],
+        ruta_archivo=ruta_archivo
+    )
+
+def cargar_monaca(ruta_archivo=None):
+    return cargar_datos_excel(
+        sheet_name="INVENTARIO MONACA",
+        columnas=['PRODUCTOS MONACA', 'TIPO MONACA', 'CANTIDAD MONACA'],
+        ruta_archivo=ruta_archivo
+    )
 
 def seleccionar_archivo ():
     root = tk.Tk()
@@ -79,37 +105,97 @@ def accion_seleccionar ():
     
 
 
-def cargar_horizonte():
-    try:
-        df_inventario = pd.read_excel(os.path.join("assets", "files", "inventario.xlsm"), sheet_name="INVENTARIO HORIZONTE")
-        datos = list(df_inventario[['PRODUCTOS HORIZONTE', 'TIPO HORIZONTE', 'CANTIDAD HORIZONTE']].itertuples(index=False, name=None))
-        return datos
-    except Exception as e:
-        print(f"Error: {e}")
-        return []
+def sumar(ruta_archivo=None):
+    """
+    Suma todas las cantidades de los tres inventarios: Allegri, Horizonte y Monaca, ignorando valores vacíos o NaN.
+    """
+    total = 0
+    # Allegri
+    datos_allegri = cargar_datos_excel(
+        sheet_name="inventario",
+        columnas=['CANTIDAD ALLEGRI'],
+        ruta_archivo=ruta_archivo
+    )
+    total += sum([fila[0] for fila in datos_allegri if isinstance(fila[0], (int, float)) and pd.notna(fila[0])])
+    # Horizonte
+    datos_horizonte = cargar_datos_excel(
+        sheet_name="INVENTARIO HORIZONTE",
+        columnas=['CANTIDAD HORIZONTE'],
+        ruta_archivo=ruta_archivo
+    )
+    total += sum([fila[0] for fila in datos_horizonte if isinstance(fila[0], (int, float)) and pd.notna(fila[0])])
+    # Monaca
+    datos_monaca = cargar_datos_excel(
+        sheet_name="INVENTARIO MONACA",
+        columnas=['CANTIDAD MONACA'],
+        ruta_archivo=ruta_archivo
+    )
+    total += sum([fila[0] for fila in datos_monaca if isinstance(fila[0], (int, float)) and pd.notna(fila[0])])
+    return total
 
-def cargar_monaca():
-    try:
-        df_inventario = pd.read_excel(os.path.join("assets", "files", "inventario.xlsm"), sheet_name="INVENTARIO MONACA")
-        datos = list(df_inventario[['PRODUCTOS MONACA', 'TIPO MONACA', 'CANTIDAD MONACA']].itertuples(index=False, name=None))
-        return datos
-    except Exception as e:
-        print(f"Error: {e}")
-        return []
-    
+def contar(ruta_archivo=None):
+    """
+    Cuenta la cantidad de productos de los tres inventarios: Allegri, Horizonte y Monaca.
+    """
+    total = 0
+    # Allegri
+    datos_allegri = cargar_datos_excel(
+        sheet_name="inventario",
+        columnas=['PRODUCTOS ALLEGRI'],
+        ruta_archivo=ruta_archivo
+    )
+    total += len([fila for fila in datos_allegri if fila[0] and str(fila[0]).strip().lower() != 'nan'])
+    # Horizonte
+    datos_horizonte = cargar_datos_excel(
+        sheet_name="INVENTARIO HORIZONTE",
+        columnas=['PRODUCTOS HORIZONTE'],
+        ruta_archivo=ruta_archivo
+    )
+    total += len([fila for fila in datos_horizonte if fila[0] and str(fila[0]).strip().lower() != 'nan'])
+    # Monaca
+    datos_monaca = cargar_datos_excel(
+        sheet_name="INVENTARIO MONACA",
+        columnas=['PRODUCTOS MONACA'],
+        ruta_archivo=ruta_archivo
+    )
+    total += len([fila for fila in datos_monaca if fila[0] and str(fila[0]).strip().lower() != 'nan'])
+    return total
 
-def sumar():
-  try:
-      df_inventario = pd.read_excel(os.path.join("assets", "files", "inventario.xlsm"), sheet_name="inventario")
-      total = df_inventario['CANTIDAD ALLEGRI'].sum() # Utilizamos sum para sumar la columna cantidad del df
-      return total # Retornamos la variable para poder utilzarla luego
-  except Exception as e:
-    print(f"error: {e}")
+def contar_allegri(ruta_archivo=None):
+    """
+    Cuenta la cantidad de productos válidos (no vacíos ni NaN) en la columna 'PRODUCTOS ALLEGRI'.
+    Útil para definir la altura del Treeview.
+    """
+    datos_allegri = cargar_datos_excel(
+        sheet_name="inventario",
+        columnas=['PRODUCTOS ALLEGRI'],
+        ruta_archivo=ruta_archivo
+    )
+    contar = len([fila for fila in datos_allegri if fila[0] and str(fila[0]).strip().lower() != 'nan'])
+    return contar
 
-def contar ():
-  try:
-      df_inventario = pd.read_excel(os.path.join("assets", "files", "inventario.xlsm"), sheet_name="inventario")
-      contar = df_inventario['PRODUCTOS ALLEGRI'].count()
-      return contar
-  except Exception as e:
-    print(f"error: {e}")
+def contar_horizonte(ruta_archivo=None):
+    """
+    Cuenta la cantidad de productos válidos (no vacíos ni NaN) en la columna 'PRODUCTOS ALLEGRI'.
+    Útil para definir la altura del Treeview.
+    """
+    datos_allegri = cargar_datos_excel(
+        sheet_name="INVENTARIO HORIZONTE",
+        columnas=['PRODUCTOS HORIZONTE'],
+        ruta_archivo=ruta_archivo
+    )
+    contar = len([fila for fila in datos_allegri if fila[0] and str(fila[0]).strip().lower() != 'nan'])
+    return contar
+
+def contar_monaca(ruta_archivo=None):
+    """
+    Cuenta la cantidad de productos válidos (no vacíos ni NaN) en la columna 'PRODUCTOS ALLEGRI'.
+    Útil para definir la altura del Treeview.
+    """
+    datos_allegri = cargar_datos_excel(
+        sheet_name="INVENTARIO MONACA",
+        columnas=['PRODUCTOS MONACA'],
+        ruta_archivo=ruta_archivo
+    )
+    contar = len([fila for fila in datos_allegri if fila[0] and str(fila[0]).strip().lower() != 'nan'])
+    return contar

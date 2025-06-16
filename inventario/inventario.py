@@ -1,7 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image , ImageTk
-from components import components, rutas
+from components import rutas 
+from components.cards import Cards
+
 from styles import colors
 from funciones import *
 
@@ -62,7 +64,7 @@ frame_info_inventory.grid_columnconfigure(0, weight=0)  # Primera card
 frame_info_inventory.grid_columnconfigure(1, weight=1)  # Espaciador flexible
 frame_info_inventory.grid_columnconfigure(2, weight=0)  # Imagen a la derecha
 
-card_path1 = components.Cards.card_path
+card_path1 = Cards.card_path
 card1 = Image.open(card_path1)
 card1 = ImageTk.PhotoImage(card1)
 

@@ -2,6 +2,7 @@ import pandas as pd
 import os
 import tkinter as tk
 from tkinter import filedialog
+from components.rutas import BASE_DIR
 import json
 
 CONFIG_FILE = "config.json"
@@ -18,7 +19,7 @@ def cargar_datos_excel(sheet_name, columnas, ruta_archivo=None):
             ruta_a_cargar = ultima_ruta
             print(f"Cargando desde la última ruta: {ruta_a_cargar}")
         else:
-            ruta_a_cargar = os.path.join("assets", "files", "inventario.xlsm")
+            ruta_a_cargar = os.path.join(BASE_DIR,"assets", "files", "inventario.xlsm")
             print(f"Cargando inventario desde la ruta por defecto: {ruta_a_cargar}")
     try:
         df = pd.read_excel(ruta_a_cargar, sheet_name=sheet_name)

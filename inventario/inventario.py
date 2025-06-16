@@ -28,9 +28,11 @@ panel_pestañas = ttk.Notebook(main)
 
 #Creamos la pestaña para el inventario de novo
 pestaña_inventario_diacenca = tk.Frame(panel_pestañas, bg=colors.Colores.background)
+pestaña_inventario_novo = tk.Frame(panel_pestañas, bg= colors.Colores.background)
 
 
 panel_pestañas.add(pestaña_inventario_diacenca, text="Inventario Diacenca")
+panel_pestañas.add(pestaña_inventario_novo, text="Inventario Novo")
 panel_pestañas.grid(row= 5, column= 0 , sticky="ew", padx= 20 , pady= 10)
 
 
@@ -209,6 +211,184 @@ for fila in datos_horizonte:
 
 for fila in datos_monaca:
     listado_monaca.insert("", "end" , values=fila)
+
+#------------------------------------------------------- -------------------------------------------
+
+# INVENTARIO NOVO
+
+
+
+logo_novo_path = rutas.Rutas.logo_novo
+novo_logo = Image.open(logo_novo_path)
+novo_logo = novo_logo.resize((120, 70))
+novo_logo = ImageTk.PhotoImage(novo_logo)
+
+logo_novo = tk.Label(pestaña_inventario_novo, image=novo_logo, bg=colors.Colores.background)
+logo_novo.grid(row=0, column=0, sticky="w", padx= 35, pady= 10)
+
+# ------------------------ stock information novo ------------------------------------
+
+#--------------- stock information --------------- 
+frame_info_inventory_novo = tk.Frame(pestaña_inventario_novo, bg=colors.Colores.background, width=1280, height=110)
+frame_info_inventory_novo.grid(row=2, column=0)
+frame_info_inventory_novo.propagate(False)
+
+# Configuramos 3 columnas para el frame de información
+frame_info_inventory_novo.grid_columnconfigure(0, weight=0)  # Primera card
+frame_info_inventory_novo.grid_columnconfigure(1, weight=1)  # Espaciador flexible
+frame_info_inventory_novo.grid_columnconfigure(2, weight=0)  # Imagen a la derecha
+
+card_path2 = Cards.card_path
+card2 = Image.open(card_path1)
+card2 = ImageTk.PhotoImage(card2)
+
+# first card
+card_total_products = tk.Label(frame_info_inventory_novo, image=card2, text=f"Total Productos: \n \n " , bg=colors.Colores.background ,fg=colors.Colores.font_color, compound="center", font=("Arial", 20 ,"bold"))
+card_total_products.grid(row=0, column=0, padx=10, pady=10, sticky="w")
+
+#Third card
+card_total_stock = tk.Label(frame_info_inventory_novo, image=card1,  text=f"Low stock items: \n \n" ,bg=colors.Colores.background,fg=colors.Colores.font_color, compound="center", font=("Arial", 20, "bold"))
+card_total_stock.grid(row=0, column=2, padx=10, pady=10, sticky="e")
+
+#Second card
+card_total_low_stock_items = tk.Label(frame_info_inventory_novo, image=card1, text=f"Total stock: \n \n " , bg=colors.Colores.background, fg=colors.Colores.font_color, compound="center", font=("Arial", 20, "bold" ))
+card_total_low_stock_items.grid(row=0, column=1, padx=10, pady=10, sticky="w")
+
+#text's
+title = tk.Label(pestaña_inventario_novo, text="Inventario", font=("Arial", 30, "bold"))
+title.config(bg=colors.Colores.background,fg="Black")
+title.grid(row= 1, column= 0, sticky="w", padx= 170, pady= 45)
+
+#----- logos productos ------
+
+frame_logos_novo = tk.Frame(pestaña_inventario_novo, width=1280, height= 120 ,background=colors.Colores.background)
+frame_logos_novo.grid(row= 3, column= 0, sticky="ew", pady= 10)
+frame_logos_novo.grid_propagate(False)
+
+
+#Logo Veneciana
+veneciana_logo_path = rutas.Rutas.veneciana_logo
+veneciana_logo = Image.open(veneciana_logo_path)
+veneciana_logo = veneciana_logo.resize((150 , 110))
+veneciana_logo = ImageTk.PhotoImage(veneciana_logo)
+
+frame_veneciana_logo = tk.Frame(frame_logos_novo, width= 325 , height= 300, background=colors.Colores.background)
+frame_veneciana_logo.grid(row= 0 , column= 0, padx= 100)
+frame_veneciana_logo.grid_propagate(False)
+
+logo_veneciana = tk.Label(frame_veneciana_logo, image=veneciana_logo, bg=colors.Colores.background)
+logo_veneciana.grid(row= 0, column= 0, sticky="e", padx= 60)
+
+#Logo oleica
+oleica_logo_path = rutas.Rutas.oleica_logo
+oleica_logo = Image.open(oleica_logo_path)
+oleica_logo = oleica_logo.resize((150 , 110))
+oleica_logo = ImageTk.PhotoImage(oleica_logo)
+
+logo_oleica = tk.Label(frame_logos_novo, image=oleica_logo, bg=colors.Colores.background)
+logo_oleica.grid(row = 0 , column= 1, sticky="en",padx= 35 , pady= 10)
+
+#Logo Giralda
+giralda_logo_path = rutas.Rutas.giralda_logo
+giralda_logo = Image.open(giralda_logo_path)
+giralda_logo = ImageTk.PhotoImage(giralda_logo)
+
+logo_giralda = tk.Label(frame_logos_novo, image= giralda_logo ,bg=colors.Colores.background)
+logo_giralda.grid(row = 0 , column= 2, sticky="en",padx= 85 , pady= 45)
+
+#Frame horizontal
+frame_horizontal2 = tk.Frame(pestaña_inventario_novo,bg=colors.Colores.background)
+frame_horizontal2.grid(row= 4 , column= 0, padx= (65,50) , pady= 10, sticky="ew")
+frame_horizontal2.grid_columnconfigure(0 , weight=1)
+frame_horizontal2.grid_columnconfigure(1 , weight=1)
+frame_horizontal2.grid_columnconfigure(2 , weight=1)
+
+
+#first frame
+frame_products4 = tk.Frame(frame_horizontal2, width= 320, height= 400, bg=colors.Colores.background)
+frame_products4.grid(row=0 , column= 0,padx=(35 ,35), sticky="nsew")
+frame_products4.grid_propagate(False) # Evitamos que se propague y el frame se ajuste segun a las medidas establecidas
+
+#first Treeview para Allegri
+columns = ("Producto", "Tipo", "Cantidad")
+
+scroll_veneciana = tk.Scrollbar(frame_products4, orient="vertical")
+listado_veneciana = ttk.Treeview(frame_products4, columns=columns, show="headings", height=contar_allegri(), yscrollcommand=scroll_allegri.set)
+scroll_veneciana.config(command=listado_allegri.yview)
+
+listado_veneciana.heading("Producto" , text="Producto")
+listado_veneciana.heading("Tipo", text="Tipo")
+listado_veneciana.heading("Cantidad" , text="Cantidad")
+listado_veneciana.grid(row=0, column=0, sticky="nsew", pady=(2,0), ipadx=80)
+scroll_veneciana.grid(row=0, column=1, sticky="ns")
+
+listado_veneciana.column("Producto", width=150)
+listado_veneciana.column("Tipo", anchor="center", width=5)
+listado_veneciana.column("Cantidad", anchor="center", width=10)
+
+
+#Second treeview para oleica
+frame_products5 = tk.Frame(frame_horizontal, width=320, height=400, bg=colors.Colores.background)
+frame_products5.grid(row=0, column=1, sticky="nsew", padx=(0, 35))
+frame_products5.grid_propagate(False)
+frame_products5.grid_rowconfigure(0, weight=1)
+frame_products5.grid_columnconfigure(0, weight=1)
+
+scroll_oleica = tk.Scrollbar(frame_products2, orient="vertical")
+listado_oleica = ttk.Treeview(frame_products2, columns=columns, show="headings", height= contar_horizonte(), yscrollcommand=scroll_horizonte.set)
+scroll_oleica.config(command=listado_horizonte.yview)
+
+listado_horizonte.heading("Producto", text="Producto")
+listado_horizonte.heading("Tipo", text="Tipo")
+listado_horizonte.heading("Cantidad", text="Cantidad")
+listado_horizonte.grid(row=0, column=0, sticky="nsew", pady=(2,0), ipadx=80)
+scroll_horizonte.grid(row=0, column=1, sticky="ns")
+
+listado_horizonte.column("Producto", width=150)
+listado_horizonte.column("Tipo", anchor="center", width=5)
+listado_horizonte.column("Cantidad", anchor="center", width=10)
+
+#Third treeview para Monaca
+frame_products3 = tk.Frame(frame_horizontal, width=320, height=400, bg=colors.Colores.background)
+frame_products3.grid(row=0, column=2, sticky="nsew")
+frame_products3.grid_propagate(False)
+frame_products3.grid_rowconfigure(0, weight=1)
+frame_products3.grid_columnconfigure(0, weight=1)
+
+scroll_monaca = tk.Scrollbar(frame_products3, orient="vertical")
+listado_monaca = ttk.Treeview(frame_products3, columns=columns, show="headings", height=contar_monaca(), yscrollcommand=scroll_monaca.set)
+scroll_monaca.config(command=listado_monaca.yview)
+
+listado_monaca.heading("Producto", text="Producto")
+listado_monaca.heading("Tipo", text="Tipo")
+listado_monaca.heading("Cantidad", text="Cantidad")
+listado_monaca.grid(row=0, column=0, sticky="nsew", pady=(2,0), ipadx=80)
+scroll_monaca.grid(row=0, column=1, sticky="ns")
+
+listado_monaca.column("Producto", width=150)
+listado_monaca.column("Tipo", anchor="center", width=5)
+listado_monaca.column("Cantidad", anchor="center", width=10)
+
+#Cargamos los datos del excel
+datos_allegri = cargar_allegri()
+datos_horizonte = cargar_horizonte()
+datos_monaca = cargar_monaca()
+
+#Insertamos los datos en el treeview
+for fila in datos_allegri:
+    listado_allegri.insert("", "end", values=fila)
+
+for fila in datos_horizonte:
+    listado_horizonte.insert("", "end" , values=fila)
+
+for fila in datos_monaca:
+    listado_monaca.insert("", "end" , values=fila)
+
+
+
+
+
+
 
 
 main.mainloop()

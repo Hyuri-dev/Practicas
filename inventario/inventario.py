@@ -214,13 +214,25 @@ for fila in datos_monaca:
 
 #------------------------------------------------------- -------------------------------------------
 
+
+
+
+
+
+
+
+
+
+
+
+
 # INVENTARIO NOVO
 
 
 
 logo_novo_path = rutas.Rutas.logo_novo
 novo_logo = Image.open(logo_novo_path)
-novo_logo = novo_logo.resize((120, 70))
+novo_logo = novo_logo.resize((90, 40))
 novo_logo = ImageTk.PhotoImage(novo_logo)
 
 logo_novo = tk.Label(pestaña_inventario_novo, image=novo_logo, bg=colors.Colores.background)
@@ -269,7 +281,7 @@ frame_logos_novo.grid_propagate(False)
 #Logo Veneciana
 veneciana_logo_path = rutas.Rutas.veneciana_logo
 veneciana_logo = Image.open(veneciana_logo_path)
-veneciana_logo = veneciana_logo.resize((150 , 110))
+veneciana_logo = veneciana_logo.resize((50 , 20))
 veneciana_logo = ImageTk.PhotoImage(veneciana_logo)
 
 frame_veneciana_logo = tk.Frame(frame_logos_novo, width= 325 , height= 300, background=colors.Colores.background)
@@ -309,7 +321,7 @@ frame_products4 = tk.Frame(frame_horizontal2, width= 320, height= 400, bg=colors
 frame_products4.grid(row=0 , column= 0,padx=(35 ,35), sticky="nsew")
 frame_products4.grid_propagate(False) # Evitamos que se propague y el frame se ajuste segun a las medidas establecidas
 
-#first Treeview para Allegri
+#first Treeview para Veneciana
 columns = ("Producto", "Tipo", "Cantidad")
 
 scroll_veneciana = tk.Scrollbar(frame_products4, orient="vertical")
@@ -328,46 +340,46 @@ listado_veneciana.column("Cantidad", anchor="center", width=10)
 
 
 #Second treeview para oleica
-frame_products5 = tk.Frame(frame_horizontal, width=320, height=400, bg=colors.Colores.background)
+frame_products5 = tk.Frame(frame_horizontal2, width=320, height=400, bg=colors.Colores.background)
 frame_products5.grid(row=0, column=1, sticky="nsew", padx=(0, 35))
 frame_products5.grid_propagate(False)
 frame_products5.grid_rowconfigure(0, weight=1)
 frame_products5.grid_columnconfigure(0, weight=1)
 
-scroll_oleica = tk.Scrollbar(frame_products2, orient="vertical")
-listado_oleica = ttk.Treeview(frame_products2, columns=columns, show="headings", height= contar_horizonte(), yscrollcommand=scroll_horizonte.set)
-scroll_oleica.config(command=listado_horizonte.yview)
+scroll_oleica = tk.Scrollbar(frame_products5, orient="vertical")
+listado_oleica = ttk.Treeview(frame_products5, columns=columns, show="headings", height= contar_horizonte(), yscrollcommand=scroll_horizonte.set)
+scroll_oleica.config(command=listado_oleica.yview)
 
-listado_horizonte.heading("Producto", text="Producto")
-listado_horizonte.heading("Tipo", text="Tipo")
-listado_horizonte.heading("Cantidad", text="Cantidad")
-listado_horizonte.grid(row=0, column=0, sticky="nsew", pady=(2,0), ipadx=80)
-scroll_horizonte.grid(row=0, column=1, sticky="ns")
+listado_oleica.heading("Producto", text="Producto")
+listado_oleica.heading("Tipo", text="Tipo")
+listado_oleica.heading("Cantidad", text="Cantidad")
+listado_oleica.grid(row=0, column=0, sticky="nsew", pady=(2,0), ipadx=80)
+scroll_oleica.grid(row=0, column=1, sticky="ns")
 
-listado_horizonte.column("Producto", width=150)
-listado_horizonte.column("Tipo", anchor="center", width=5)
-listado_horizonte.column("Cantidad", anchor="center", width=10)
+listado_oleica.column("Producto", width=150)
+listado_oleica.column("Tipo", anchor="center", width=5)
+listado_oleica.column("Cantidad", anchor="center", width=10)
 
-#Third treeview para Monaca
-frame_products3 = tk.Frame(frame_horizontal, width=320, height=400, bg=colors.Colores.background)
-frame_products3.grid(row=0, column=2, sticky="nsew")
-frame_products3.grid_propagate(False)
-frame_products3.grid_rowconfigure(0, weight=1)
-frame_products3.grid_columnconfigure(0, weight=1)
+#Third treeview para Giralda
+frame_products6 = tk.Frame(frame_horizontal2, width=320, height=400, bg=colors.Colores.background)
+frame_products6.grid(row=0, column=2, sticky="nsew")
+frame_products6.grid_propagate(False)
+frame_products6.grid_rowconfigure(0, weight=1)
+frame_products6.grid_columnconfigure(0, weight=1)
 
-scroll_monaca = tk.Scrollbar(frame_products3, orient="vertical")
-listado_monaca = ttk.Treeview(frame_products3, columns=columns, show="headings", height=contar_monaca(), yscrollcommand=scroll_monaca.set)
-scroll_monaca.config(command=listado_monaca.yview)
+scroll_giralda = tk.Scrollbar(frame_products6, orient="vertical")
+listado_giralda = ttk.Treeview(frame_products6, columns=columns, show="headings", yscrollcommand=scroll_giralda.set)
+scroll_giralda.config(command=listado_giralda.yview)
 
-listado_monaca.heading("Producto", text="Producto")
-listado_monaca.heading("Tipo", text="Tipo")
-listado_monaca.heading("Cantidad", text="Cantidad")
-listado_monaca.grid(row=0, column=0, sticky="nsew", pady=(2,0), ipadx=80)
-scroll_monaca.grid(row=0, column=1, sticky="ns")
+listado_giralda.heading("Producto", text="Producto")
+listado_giralda.heading("Tipo", text="Tipo")
+listado_giralda.heading("Cantidad", text="Cantidad")
+listado_giralda.grid(row=0, column=0, sticky="nsew", pady=(2,0), ipadx=80)
+scroll_giralda.grid(row=0, column=1, sticky="ns")
 
-listado_monaca.column("Producto", width=150)
-listado_monaca.column("Tipo", anchor="center", width=5)
-listado_monaca.column("Cantidad", anchor="center", width=10)
+listado_giralda.column("Producto", width=150)
+listado_giralda.column("Tipo", anchor="center", width=5)
+listado_giralda.column("Cantidad", anchor="center", width=10)
 
 #Cargamos los datos del excel
 datos_allegri = cargar_allegri()
@@ -383,12 +395,5 @@ for fila in datos_horizonte:
 
 for fila in datos_monaca:
     listado_monaca.insert("", "end" , values=fila)
-
-
-
-
-
-
-
 
 main.mainloop()

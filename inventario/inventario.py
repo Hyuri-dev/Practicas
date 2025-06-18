@@ -281,7 +281,7 @@ frame_logos_novo.grid_propagate(False)
 #Logo Veneciana
 veneciana_logo_path = rutas.Rutas.veneciana_logo
 veneciana_logo = Image.open(veneciana_logo_path)
-veneciana_logo = veneciana_logo.resize((50 , 20))
+veneciana_logo = veneciana_logo.resize((150 , 110))
 veneciana_logo = ImageTk.PhotoImage(veneciana_logo)
 
 frame_veneciana_logo = tk.Frame(frame_logos_novo, width= 325 , height= 300, background=colors.Colores.background)
@@ -303,10 +303,11 @@ logo_oleica.grid(row = 0 , column= 1, sticky="en",padx= 35 , pady= 10)
 #Logo Giralda
 giralda_logo_path = rutas.Rutas.giralda_logo
 giralda_logo = Image.open(giralda_logo_path)
+giralda_logo = giralda_logo.resize((180 , 110))
 giralda_logo = ImageTk.PhotoImage(giralda_logo)
 
 logo_giralda = tk.Label(frame_logos_novo, image= giralda_logo ,bg=colors.Colores.background)
-logo_giralda.grid(row = 0 , column= 2, sticky="en",padx= 85 , pady= 45)
+logo_giralda.grid(row = 0 , column= 2, sticky="en",padx= 195 , pady= 10)
 
 #Frame horizontal
 frame_horizontal2 = tk.Frame(pestaña_inventario_novo,bg=colors.Colores.background)

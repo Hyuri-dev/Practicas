@@ -1,3 +1,4 @@
-sheet.py
+
 .venv
-__pycache__
+inventario/__pycache
+sheet.py

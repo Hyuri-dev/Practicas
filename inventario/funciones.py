@@ -37,7 +37,7 @@ def cargar_allegri(ruta_archivo=None):
     """
     datos = cargar_datos_excel(
         sheet_name="inventario",
-        columnas=['PRODUCTOS ALLEGRI', 'TIPO ALLEGRI', 'CANTIDAD ALLEGRI'],
+        columnas=['ALLEGRI', 'TIPO ALLEGRI', 'CANTIDAD ALLEGRI'],
         ruta_archivo=ruta_archivo
     )
     # Filtrar filas donde el producto es vacío o NaN
@@ -46,15 +46,15 @@ def cargar_allegri(ruta_archivo=None):
 
 def cargar_horizonte(ruta_archivo=None):
     return cargar_datos_excel(
-        sheet_name="INVENTARIO HORIZONTE",
-        columnas=['PRODUCTOS HORIZONTE', 'TIPO HORIZONTE', 'CANTIDAD HORIZONTE'],
+        sheet_name="inventario",
+        columnas=['HORIZONTE', 'TIPO HORIZONTE', 'CANTIDAD HORIZONTE'],
         ruta_archivo=ruta_archivo
     )
 
 def cargar_monaca(ruta_archivo=None):
     return cargar_datos_excel(
-        sheet_name="INVENTARIO MONACA",
-        columnas=['PRODUCTOS MONACA', 'TIPO MONACA', 'CANTIDAD MONACA'],
+        sheet_name="inventario",
+        columnas=['MONACA', 'TIPO MONACA', 'CANTIDAD MONACA'],
         ruta_archivo=ruta_archivo
     )
 
@@ -120,14 +120,14 @@ def sumar(ruta_archivo=None):
     total += sum([fila[0] for fila in datos_allegri if isinstance(fila[0], (int, float)) and pd.notna(fila[0])])
     # Horizonte
     datos_horizonte = cargar_datos_excel(
-        sheet_name="INVENTARIO HORIZONTE",
+        sheet_name="inventario",
         columnas=['CANTIDAD HORIZONTE'],
         ruta_archivo=ruta_archivo
     )
     total += sum([fila[0] for fila in datos_horizonte if isinstance(fila[0], (int, float)) and pd.notna(fila[0])])
     # Monaca
     datos_monaca = cargar_datos_excel(
-        sheet_name="INVENTARIO MONACA",
+        sheet_name="inventario",
         columnas=['CANTIDAD MONACA'],
         ruta_archivo=ruta_archivo
     )
@@ -142,21 +142,21 @@ def contar(ruta_archivo=None):
     # Allegri
     datos_allegri = cargar_datos_excel(
         sheet_name="inventario",
-        columnas=['PRODUCTOS ALLEGRI'],
+        columnas=['ALLEGRI'],
         ruta_archivo=ruta_archivo
     )
     total += len([fila for fila in datos_allegri if fila[0] and str(fila[0]).strip().lower() != 'nan'])
     # Horizonte
     datos_horizonte = cargar_datos_excel(
-        sheet_name="INVENTARIO HORIZONTE",
-        columnas=['PRODUCTOS HORIZONTE'],
+        sheet_name="inventario",
+        columnas=['HORIZONTE'],
         ruta_archivo=ruta_archivo
     )
     total += len([fila for fila in datos_horizonte if fila[0] and str(fila[0]).strip().lower() != 'nan'])
     # Monaca
     datos_monaca = cargar_datos_excel(
-        sheet_name="INVENTARIO MONACA",
-        columnas=['PRODUCTOS MONACA'],
+        sheet_name="inventario",
+        columnas=['MONACA'],
         ruta_archivo=ruta_archivo
     )
     total += len([fila for fila in datos_monaca if fila[0] and str(fila[0]).strip().lower() != 'nan'])
@@ -169,7 +169,7 @@ def contar_allegri(ruta_archivo=None):
     """
     datos_allegri = cargar_datos_excel(
         sheet_name="inventario",
-        columnas=['PRODUCTOS ALLEGRI'],
+        columnas=['ALLEGRI'],
         ruta_archivo=ruta_archivo
     )
     contar = len([fila for fila in datos_allegri if fila[0] and str(fila[0]).strip().lower() != 'nan'])
@@ -181,8 +181,8 @@ def contar_horizonte(ruta_archivo=None):
     Útil para definir la altura del Treeview.
     """
     datos_allegri = cargar_datos_excel(
-        sheet_name="INVENTARIO HORIZONTE",
-        columnas=['PRODUCTOS HORIZONTE'],
+        sheet_name="inventario",
+        columnas=['HORIZONTE'],
         ruta_archivo=ruta_archivo
     )
     contar = len([fila for fila in datos_allegri if fila[0] and str(fila[0]).strip().lower() != 'nan'])
@@ -194,8 +194,8 @@ def contar_monaca(ruta_archivo=None):
     Útil para definir la altura del Treeview.
     """
     datos_allegri = cargar_datos_excel(
-        sheet_name="INVENTARIO MONACA",
-        columnas=['PRODUCTOS MONACA'],
+        sheet_name="inventario",
+        columnas=['MONACA'],
         ruta_archivo=ruta_archivo
     )
     contar = len([fila for fila in datos_allegri if fila[0] and str(fila[0]).strip().lower() != 'nan'])

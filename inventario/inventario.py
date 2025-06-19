@@ -3,9 +3,9 @@ from tkinter import ttk
 from PIL import Image , ImageTk
 from components import rutas 
 from components.cards import Cards
-
 from styles import colors
 from funciones import *
+from funciones_novo import *
 
 #Ventana principal
 main = tk.Tk()
@@ -16,6 +16,8 @@ barra_menu = tk.Menu(main)
 main.config(bg= colors.Colores.background)
 main.configure(menu= barra_menu)
 
+
+
 # Crear el primer menú
 menu_mantenimiento = tk.Menu(barra_menu, tearoff=False)
 menu_mantenimiento.add_command(label="Abrir archivo", command=accion_seleccionar)
@@ -24,7 +26,7 @@ menu_mantenimiento.add_command(label="Abrir archivo", command=accion_seleccionar
 barra_menu.add_cascade(menu=menu_mantenimiento, label="mantenimiento")
 
 #Creamos una barra de pestañas para añadir el inventario de novo
-panel_pestañas = ttk.Notebook(main)
+panel_pestañas = ttk.Notebook(main, padding= 0)
 
 #Creamos la pestaña para el inventario de novo
 pestaña_inventario_diacenca = tk.Frame(panel_pestañas, bg=colors.Colores.background)
@@ -48,6 +50,10 @@ main.grid_columnconfigure(2, weight=1)
 menu_frame = tk.Frame(pestaña_inventario_diacenca, bg=colors.Colores.background, width= 1280, height= 50)
 menu_frame.grid(row= 0 , column=0, sticky="ew")
 menu_frame.propagate(False)
+
+scrollbar = tk.Scrollbar(pestaña_inventario_diacenca, orient= "vertical")
+scrollbar.set(0.0 , 0.1) 
+scrollbar.place( x= 0 , y= 0)
 
 logo_path = rutas.Rutas.logo_tipo
 logo = Image.open(logo_path)
@@ -263,7 +269,7 @@ card_total_stock = tk.Label(frame_info_inventory_novo, image=card1,  text=f"Low 
 card_total_stock.grid(row=0, column=2, padx=10, pady=10, sticky="e")
 
 #Second card
-card_total_low_stock_items = tk.Label(frame_info_inventory_novo, image=card1, text=f"Total stock: \n \n " , bg=colors.Colores.background, fg=colors.Colores.font_color, compound="center", font=("Arial", 20, "bold" ))
+card_total_low_stock_items = tk.Label(frame_info_inventory_novo, image=card1, text=f"Total stock: \n \n {sumar_stock_novo()} " , bg=colors.Colores.background, fg=colors.Colores.font_color, compound="center", font=("Arial", 20, "bold" ))
 card_total_low_stock_items.grid(row=0, column=1, padx=10, pady=10, sticky="w")
 
 #text's
@@ -348,7 +354,7 @@ frame_products5.grid_rowconfigure(0, weight=1)
 frame_products5.grid_columnconfigure(0, weight=1)
 
 scroll_oleica = tk.Scrollbar(frame_products5, orient="vertical")
-listado_oleica = ttk.Treeview(frame_products5, columns=columns, show="headings", height= contar_horizonte(), yscrollcommand=scroll_horizonte.set)
+listado_oleica = ttk.Treeview(frame_products5, columns=columns, show="headings", height= contar_oleica, yscrollcommand=scroll_horizonte.set)
 scroll_oleica.config(command=listado_oleica.yview)
 
 listado_oleica.heading("Producto", text="Producto")
@@ -369,7 +375,7 @@ frame_products6.grid_rowconfigure(0, weight=1)
 frame_products6.grid_columnconfigure(0, weight=1)
 
 scroll_giralda = tk.Scrollbar(frame_products6, orient="vertical")
-listado_giralda = ttk.Treeview(frame_products6, columns=columns, show="headings", yscrollcommand=scroll_giralda.set)
+listado_giralda = ttk.Treeview(frame_products6, columns=columns, show="headings",height=contar_giralda, yscrollcommand=scroll_giralda.set)
 scroll_giralda.config(command=listado_giralda.yview)
 
 listado_giralda.heading("Producto", text="Producto")
@@ -382,19 +388,20 @@ listado_giralda.column("Producto", width=150)
 listado_giralda.column("Tipo", anchor="center", width=5)
 listado_giralda.column("Cantidad", anchor="center", width=10)
 
-#Cargamos los datos del excel
-datos_allegri = cargar_allegri()
-datos_horizonte = cargar_horizonte()
-datos_monaca = cargar_monaca()
 
-#Insertamos los datos en el treeview
-for fila in datos_allegri:
-    listado_allegri.insert("", "end", values=fila)
 
-for fila in datos_horizonte:
-    listado_horizonte.insert("", "end" , values=fila)
+#Cargamos los datos del excel e Insertamos los datos en el treeview
 
-for fila in datos_monaca:
-    listado_monaca.insert("", "end" , values=fila)
+datos_veneciana = inventario_sirena()
+for fila in datos_veneciana:
+    listado_veneciana.insert("", "end", values=fila)
+
+datos_oleica = inventario_oleica()
+for fila in datos_oleica:
+    listado_oleica.insert("", "end" , values=fila)
+
+datos_giralda = inventario_giralda()
+for fila in datos_giralda:
+    listado_giralda.insert("", "end" , values=fila)
 
 main.mainloop()

@@ -19,7 +19,7 @@ def cargar_datos_excel(sheet_name, columnas, ruta_archivo=None):
             ruta_a_cargar = ultima_ruta
             print(f"Cargando desde la última ruta: {ruta_a_cargar}")
         else:
-            ruta_a_cargar = os.path.join(BASE_DIR,"assets", "files", "inventario.xlsm")
+            ruta_a_cargar = os.path.join(BASE_DIR,"assets", "files", "inventariox.xlsm")
             print(f"Cargando inventario desde la ruta por defecto: {ruta_a_cargar}")
     try:
         df = pd.read_excel(ruta_a_cargar, sheet_name=sheet_name)
@@ -45,18 +45,27 @@ def cargar_allegri(ruta_archivo=None):
     return datos_filtrados
 
 def cargar_horizonte(ruta_archivo=None):
-    return cargar_datos_excel(
+  datos = cargar_datos_excel (
         sheet_name="inventario",
         columnas=['HORIZONTE', 'TIPO HORIZONTE', 'CANTIDAD HORIZONTE'],
         ruta_archivo=ruta_archivo
-    )
+  )
+  
+  datos_filtrados = [fila for fila in datos if fila[0] and str(fila[0]).strip().lower() != 'nan']
+  return datos_filtrados
+    
+    
 
 def cargar_monaca(ruta_archivo=None):
-    return cargar_datos_excel(
+  datos = cargar_datos_excel (
         sheet_name="inventario",
         columnas=['MONACA', 'TIPO MONACA', 'CANTIDAD MONACA'],
         ruta_archivo=ruta_archivo
-    )
+  )
+  
+  datos_filtrados = [fila for fila in datos if fila[0] and str(fila[0]).strip().lower() != 'nan']
+  return datos_filtrados
+
 
 def seleccionar_archivo ():
     root = tk.Tk()

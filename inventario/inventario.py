@@ -18,6 +18,8 @@ main.configure(menu= barra_menu)
 
 
 
+
+
 # Crear el primer menú
 menu_mantenimiento = tk.Menu(barra_menu, tearoff=False)
 menu_mantenimiento.add_command(label="Abrir archivo", command=accion_seleccionar)
@@ -210,12 +212,24 @@ datos_monaca = cargar_monaca()
 
 #Insertamos los datos en el treeview
 for fila in datos_allegri:
-    listado_allegri.insert("", "end", values=fila)
+  fila = list(fila)
+  cantidad = fila[2]
+  if isinstance (cantidad, float) and cantidad.is_integer():
+    fila[2] = int(cantidad)
+  listado_allegri.insert("", "end", values=fila)
 
 for fila in datos_horizonte:
+  fila = list(fila)
+  cantidad = fila[2]
+  if isinstance (cantidad, float) and cantidad.is_integer():
+    fila[2] = int(cantidad)
     listado_horizonte.insert("", "end" , values=fila)
 
 for fila in datos_monaca:
+  fila = list(fila)
+  cantidad = fila[2]
+  if isinstance (cantidad, float) and cantidad.is_integer():
+    fila[2] = int(cantidad)
     listado_monaca.insert("", "end" , values=fila)
 
 #------------------------------------------------------- -------------------------------------------
@@ -394,14 +408,26 @@ listado_giralda.column("Cantidad", anchor="center", width=10)
 
 datos_veneciana = inventario_sirena()
 for fila in datos_veneciana:
-    listado_veneciana.insert("", "end", values=fila)
+  fila = list(fila)
+  cantidad = fila[2]
+  if isinstance(cantidad, float) and cantidad.is_integer():
+    fila[2] = int(cantidad)
+  listado_veneciana.insert("", "end", values=fila)
 
 datos_oleica = inventario_oleica()
 for fila in datos_oleica:
-    listado_oleica.insert("", "end" , values=fila)
+    fila = list(fila)
+    cantidad = fila[2]
+    if isinstance(cantidad, float) and cantidad.is_integer():
+        fila[2] = int(cantidad)
+    listado_oleica.insert("", "end", values=fila)
 
 datos_giralda = inventario_giralda()
 for fila in datos_giralda:
-    listado_giralda.insert("", "end" , values=fila)
+    fila = list(fila)
+    cantidad = fila[2]
+    if isinstance(cantidad, float) and cantidad.is_integer():
+        fila[2] = int(cantidad)
+    listado_giralda.insert("", "end", values=fila)
 
 main.mainloop()

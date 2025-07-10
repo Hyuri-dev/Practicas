@@ -36,7 +36,7 @@ pestaña_inventario_novo = tk.Frame(panel_pestañas, bg= colors.Colores.backgrou
 
 
 panel_pestañas.add(pestaña_inventario_diacenca, text="Inventario Diacenca")
-panel_pestañas.add(pestaña_inventario_novo, text="Inventario Novo")
+panel_pestaña_inventario_novo = panel_pestañas.add(pestaña_inventario_novo, text="Inventario Novo")
 panel_pestañas.grid(row= 5, column= 0 , sticky="ew", padx= 20 , pady= 10)
 
 
@@ -230,7 +230,7 @@ for fila in datos_monaca:
   cantidad = fila[2]
   if isinstance (cantidad, float) and cantidad.is_integer():
     fila[2] = int(cantidad)
-    listado_monaca.insert("", "end" , values=fila)
+  listado_monaca.insert("", "end", values=fila)
 
 #------------------------------------------------------- -------------------------------------------
 

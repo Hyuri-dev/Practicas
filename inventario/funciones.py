@@ -56,15 +56,6 @@ def cargar_horizonte(ruta_archivo=None):
     
     
 
-def cargar_monaca(ruta_archivo=None):
-  datos = cargar_datos_excel (
-        sheet_name="inventario",
-        columnas=['MONACA', 'TIPO MONACA', 'CANTIDAD MONACA'],
-        ruta_archivo=ruta_archivo
-  )
-  
-  datos_filtrados = [fila for fila in datos if fila[0] and str(fila[0]).strip().lower() != 'nan']
-  return datos_filtrados
 
 
 def seleccionar_archivo ():
@@ -209,3 +200,15 @@ def contar_monaca(ruta_archivo=None):
     )
     contar = len([fila for fila in datos_allegri if fila[0] and str(fila[0]).strip().lower() != 'nan'])
     return contar
+
+def cargar_monaca(ruta_archivo=None):
+  datos = cargar_datos_excel (
+        sheet_name="inventario",
+        columnas=['MONACA', 'TIPO MONACA', 'CANTIDAD MONACA'],
+        ruta_archivo=ruta_archivo
+  )
+  
+  datos_filtrados = [fila for fila in datos if fila[0] and str(fila[0]).strip().lower() != 'nan']
+  return datos_filtrados
+
+cargar_monaca()
